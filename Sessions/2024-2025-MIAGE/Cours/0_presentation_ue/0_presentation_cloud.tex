@@ -1,0 +1,342 @@
+\documentclass[xcolor={dvipsnames}]{beamer}
+\mode<presentation>{\usetheme{boxes}}
+\usecolortheme{default}
+\setbeamertemplate{navigation symbols}{}%remove navigation symbols
+
+\setbeamerfont{frametitle}{size=\Large}
+
+%\setbeamercolor{structure}{fg=beamer@blendedblue}
+
+
+
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+
+\setbeamercolor{bibliography entry author}{fg=black}
+\setbeamercolor{bibliography entry title}{fg=black} 
+\setbeamercolor{bibliography entry location}{fg=black} 
+\setbeamercolor{bibliography entry note}{fg=black}  
+
+\usepackage[style=numeric,sorting=ydnt,maxnames=1,defernumbers=true, firstinits=true]{biblatex}
+\renewbibmacro{in:}{}
+\ExecuteBibliographyOptions{sorting=ydnt}
+
+%\addbibresource{./jlescSummerSchool_checkpointing.bib}
+
+\makeatother
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+    %% \begin{beamercolorbox}[wd=.2\paperwidth,ht=2.25ex,dp=1ex]{date in head/foot}%
+    %%   \usebeamerfont{date in foot}
+    %% \end{beamercolorbox}%
+  %%   \begin{beamercolorbox}[wd=.6\paperwidth,ht=2.25ex,dp=1ex, center]{date in head/foot}%
+  %%     \usebeamerfont{date in foot}\insertshortdate
+  %% \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.25ex,dp=1ex]{date in head/foot}%
+    \usebeamerfont{date in foot}\hfill
+    {\scriptsize\insertframenumber{}}\hspace*{2ex}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\makeatletter
+
+
+
+\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}
+%\usepackage[francais]{babel}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{pifont}
+\usepackage{changepage}
+\usepackage{listings}
+\usepackage{fancyvrb}
+\usepackage{multirow}
+\usepackage{tabu} 
+\usepackage{colortbl}
+
+\usepackage{marvosym}
+
+\usepackage{eurosym}
+
+\usepackage{pdfpages}
+\setbeamercolor{background canvas}{bg=}
+
+
+\usepackage{perpage} %the perpage package
+\MakePerPage{footnote}
+
+
+
+\definecolor{beamer@blendedblue}{RGB}{0,102,204}
+
+\definecolor{beamer@lightgray}{RGB}{238,238,224}
+
+
+\definecolor{itemorange}{RGB}{255,114,0}
+
+
+\definecolor{myorange}{RGB}{255,103,0}
+
+
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{itemize subitem}[triangle]
+
+
+\setbeamercolor{itemize item}{fg=beamer@blendedblue}
+\setbeamercolor{itemize subitem}{fg=gray}
+
+
+\newcommand<>{\Blue}[1]{{\color#2{beamer@blendedblue}#1}}
+%\newcommand<>{\Orange}[1]{{\color#2{BurntOrange}#1}}
+\newcommand<>{\Orange}[1]{{\color#2{myorange}#1}}
+\newcommand<>{\Alert}[1]{{\Orange{\textbf{#1}}}}
+
+
+\newcommand{\largeskip}{\vspace{0.6cm}}
+\newcommand{\hugeskip}{\vspace{1cm}}
+
+
+
+\usepackage{tikz}
+\usetikzlibrary{%
+decorations.pathreplacing,%
+decorations.pathmorphing,%
+decorations.shapes,%
+decorations.text,%
+decorations.markings,%
+shapes,%
+shapes.callouts,%
+shadows,%
+arrows,
+calc,%
+positioning,%
+chains,%
+backgrounds,%
+fit, %
+fadings}
+
+
+
+
+
+
+\tikzset{
+    invisible/.style={opacity=0},
+    visible on/.style={alt={#1{}{invisible}}},
+    alt/.code args={<#1>#2#3}{%
+      \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}} % \pgfkeysalso doesn't change the path
+    },
+}
+
+
+\tikzset{
+    colornode/.style={
+        outer sep=0pt, fill=#1!67, %text height=2ex, text depth=.5ex
+    },
+    cpu/.style={
+        diamond, fill=gray!30, aspect=3, name=CPU#1,
+        node contents={$\text{CPU}_{#1}$},
+    },
+    thread/.style={fill=#1!67,
+        minimum width=5ex, minimum height=1.25em},
+    tick/.style={very thin},
+}
+
+
+
+\newcommand{\email}[1]{\href{mailto:#1}{\nolinkurl{#1}}}
+
+\newcommand{\xmark}{\ding{55}}
+
+
+\AtBeginPart{
+  %\frame{\partpage}
+  \frame{
+    \frametitle{Agenda}
+    \small
+    \tableofcontents[part=\insertpartnumber,
+    sectionstyle=show,
+    subsectionstyle=hide,
+    subsubsectionstyle=hide]
+  }
+}
+
+\AtBeginSection[]
+{
+  \begin{frame}
+    \frametitle{Agenda}
+    \small
+    \tableofcontents[
+    sectionstyle=show/shaded,
+    subsectionstyle=show/show/hide,
+    subsubsectionstyle=hide]
+  \end{frame}
+}
+
+\AtBeginSubsection[]{
+  \mode<presentation>{
+    \frame{\tableofcontents[
+      sectionstyle=show/hide,
+      subsectionstyle=show/shaded/hide,
+      subsubsectionstyle=show/show/hide]
+    }
+  }
+}
+
+
+\date[\the\year]{\the\year}
+
+\newcommand{\shellcmd}[1]{\indent\indent\texttt{\footnotesize\$ #1}}
+
+
+\title[]{Cloud Computing}
+\subtitle{Présentation}
+
+
+\author[]{\\Danilo Carastan dos Santos
+  \\ \vspace{0.5cm} \email{danilo.carastan-dos-santos@univ-grenoble-alpes.fr}}
+
+\definecolor{mybrown}{RGB}{205,133,63}
+\definecolor{myblue}{RGB}{28,134,238}
+
+\let\Red=\alert
+\newcommand<>{\green}[1]{{\color#2{green!70!black}#1}}
+\newcommand<>{\blue}[1]{{\color#2{blue!100!black!100}#1}}
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+
+\newcommand\myvdots{{\smash[b]\strut\smash[t]\vdots}}
+
+
+\usepackage{boxedminipage}
+\newenvironment{boitecode}[1]{
+    \begin{boxedminipage}{\linewidth}      
+%\begin{beamerboxesrounded}[shadow=true,lower=lightex,upper=medex]{#1}
+    #1
+    \begin{semiverbatim}
+}{   \end{semiverbatim}\vspace{-1.5\baselineskip}
+    \end{boxedminipage}
+%  \end{beamerboxesrounded}
+}
+
+
+\begin{document}
+
+
+\begingroup
+\setbeamercolor{titlelike}{bg=beamer@lightgray, fg=black}
+\begin{frame}
+\titlepage
+\end{frame}
+
+\endgroup
+
+
+
+\begin{frame}{Motivations}
+
+  \begin{center}
+    \Large{Dans quelques mois, vous allez être sur le marché du travail et
+    intégrer un projet en entreprise.}
+  \end{center}
+
+  \bigskip
+  Pour pouvoir être efficace dans votre nouvel environnement, il vous
+  faudra:
+  \begin{itemize}
+  \item maîtriser un ensemble de \Alert{méthodes} de travail
+  \item maîtriser un ensemble de \Alert{technologies}
+  \end{itemize}
+  
+\end{frame}
+
+\begin{frame}{\Alert{Technologie :} Le \textit{Cloud Computing}}
+
+Modèle permettant un accès pratique et à la demande des ressources informatique
+configurables (par exemple, réseaux, serveurs, stockage, applications et
+services) qui peuvent être rapidement mis à disposition avec un minimum d'effort
+de gestion ou d'interaction avec le fournisseur de services.
+
+\vspace{5mm}
+
+\textbf{Modèle largement utilisé :} Facebook, Twitter (X), Salesforce.com, Netflix, \dots
+  
+\end{frame}
+
+\begin{frame}{Compétences developpées}  
+
+  \begin{footnotesize}
+  
+  \textbf{Axe 1 : Bases du Cloud}
+  \begin{itemize}
+    \item Savoir distinguer les types de service Cloud (IaaS, PaaS, SaaS, FaaS)
+    \item Comprendre les principes et techniques de virtualisation et conteneurisation  
+  \end{itemize}
+
+  \textbf{Axe 2 : Mise à niveau Git}
+  \begin{itemize}
+  \item Utiliser des outils collaboratifs (Git)
+  \item Comprendre les principes CI-CD (\textit{Continuous Intégration \& Continuous Deployment}) 
+  \end{itemize}
+
+  \textbf{Axe 3 : Techniques du Cloud} 
+  \begin{itemize}
+  \item Mettre en place une couche de virtualisation/conteneurisation (VirtualBox, Docker)
+  \item Développer des applications Cloud-native\footnote{\scriptsize{Les applications Cloud
+  (dites ``cloud-native'') suivent une conception à base de microservices, qui
+  permet d'exploiter les fonctionnalités des couches PaaS (par exemple, la
+  gestion automatique de l'élasticité pour adapter l'architecture répartie de
+  l'application à la charge client).}} via les technologies existantes   
+  \end{itemize}
+\end{footnotesize}
+  
+\end{frame}
+
+
+\begin{frame}{Organisation}
+
+  \begin{block}{Staff}
+    \begin{itemize}
+    \item Danilo Carastan-Santos
+    \item Dimitri Rapacchi
+    \item Gérard Forestier    
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Organisation}
+    \begin{columns}
+      \column{0.5\textwidth}
+      \begin{itemize}
+      \item 9 heures de cours
+      \item 18 heures de TP
+        \begin{itemize}
+        \item Projet: Déployer une application sur un Cloud public
+        \end{itemize}
+      \end{itemize}
+
+      \column{0.5\textwidth}
+      \begin{itemize}
+      \item Note:
+      \begin{itemize}
+      \item 33\% sur le contrôle continu (à définir)
+      \item 67\% sur l'examen
+      \end{itemize}
+      \end{itemize}
+    \end{columns}
+  \end{block}
+
+\bigskip
+
+  \begin{block}{Site web du cours}
+      \begin{itemize}
+      \item \url{https://m1-miage-cloud-gitlab-io-4d0541.gitlab.io/}
+      \end{itemize}
+
+  \end{block}
+  
+\end{frame}
+
+
+
+\end{document}

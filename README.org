@@ -1,0 +1,34 @@
+#+TITLE: Cloud Computing
+
+* Introduction
+Le cours Cloud/DevOps permet d'approfondir la connaissance des concepts fondamentaux et des pratiques avancées du cloud computing et de l'automatisation des opérations IT. Cette formation couvre les principes et les techniques essentiels pour concevoir, déployer et gérer des infrastructures et des architectures logicielles distribuées. En mettant l'accent sur les principes de la conteneurisation, de la gestion continue des configurations et de l'intégration continue/livraison continue (CI/CD), ce cours répond à l'évolution rapide des technologies de l'information et à la nécessité croissante de compétences spécialisées dans la gestion et l'orchestration des environnements cloud. Les étudiants apprendront à utiliser des outils modernes et des pratiques DevOps pour optimiser la performance, la fiabilité et la scalabilité des systèmes distribués.
+
+Il s’agit d’acquérir une expérience concrète dans la configuration et la gestion de plateformes de virtualisation, la mise en place de systèmes de gestion de versions, la création et le déploiement de conteneurs, et l'implémentation de pipelines de développement automatisés. Ces compétences permettent de comprendre et de maîtriser les outils et les processus modernes utilisés pour assurer une livraison rapide et fiable des applications dans des environnements de production.
+
+* Contributeurs
+- [[https://danilo-carastan-santos.github.io/][Danilo Carastan-Santos]] - Responsable, Cours
+- Gérard FORESTIER - TP 
+- Dimitri RAPACCHI - TP
+
+* Structure du dépôt
+- [[./Sessions][Sessions]] : contient le matériel de cours pour chaque année et fiière.
+
+* (Tentative d') Organisation générale des cours : 
+    1. Vision générale du Cloud
+        - Pourquoi faire du cloud
+        - Types de service (IaaS, PaaS, etc.)
+        - Types de Cloud (public, privé, etc) 
+    2. Git/DevOps
+        - Basic (clone, commit, pull, push, merge, rebase)
+        - Organisation de branches et revue de code avec pull/merge request
+        - CI/CD (e.g., github actions)                  
+    3. Méthodes de virtualisation
+        - Machines Virtuelles
+        - Conteneurs  
+    4. Applications "Cloud Native"
+    	- Microservices
+    5. L'impact environnemental du Cloud  
+    
+* Support Additionnel (Merci Thomas Ropars et Renaud Lachaize)
+1. https://m2-mosig-cloud.gitlab.io/lectures/
+2. https://roparst.gricad-pages.univ-grenoble-alpes.fr/cloud-tutorials/m2gi-devops/  
