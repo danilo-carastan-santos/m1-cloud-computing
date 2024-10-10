@@ -337,6 +337,7 @@ fadings}
     \centering \includegraphics[width=.7\linewidth]{Figures/virtualisation.pdf}
 \end{frame}
 
+\begin{comment}   
 
 \begin{frame}{Image d'une machine virtuelle}
     \begin{itemize}
@@ -346,6 +347,7 @@ fadings}
     \end{itemize}
     
 \end{frame}
+\end{comment}
 
 \begin{frame}{Scalabilité}{\textit{Scaling}}
     \begin{itemize}
@@ -400,11 +402,312 @@ fadings}
         \begin{column}{.6\linewidth}            
             \centering \includegraphics[width=.9\linewidth]{Figures/virtual-scaling.pdf}
         \end{column}
-    \end{columns}   
+    \end{columns} 
+\end{frame}
 
-   
+\begin{frame}{Scalabilité Horizontale}{\textit{Horizontal Scaling}}
+
+    \begin{columns}
+        \begin{column}{.4\linewidth}
+            \begin{itemize}
+                \item \textbf{Idée : } Ajouter plus d'instances de
+                l'application. Plusieurs machines virtuelles en parallèle
+                \item \textbf{Avantages : }
+                \begin{itemize}
+                    \item  Système distribué                   
+                \end{itemize}
+                \item \textbf{Inconvénients : }
+                \begin{itemize}
+                    \item Plus compliqué à développer : Synchronisation, débogage, etc. 
+                                       
+                \end{itemize}
+            \end{itemize}        
+        \end{column}
+        \begin{column}{.6\linewidth}            
+            \centering \includegraphics[width=.9\linewidth]{Figures/horizontal_scaling.pdf}
+        \end{column}
+    \end{columns} 
+\end{frame}
+
+
+\begin{frame}{Conteneurs}{\textit{Containers}}
     
+    \begin{itemize}
+        \item Motivation : Un microservice par VM consomme trop de ressources.
+        \begin{itemize}
+            \item Par exemple : chaque VM a un OS invité (\textit{guest OS}), ce
+            qui est trop pour juste un microservice
+        \end{itemize}
+        
+        \item Démarrage de VM est trop long (plusieurs minutes)
+        \begin{itemize}
+            \item Il faut démarrer un système complet
+        \end{itemize}
+        \item Nous souhaitons partager l'OS hôte (\textit{host OS}) entre les
+        applications, tout en étant le plus isolé possible.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Conteneurs}{\textit{OS-level virtualization} : comparaison avec Machines Virtuelles}
+    \centering \includegraphics[width=\linewidth]{Figures/virtualisation_full.pdf}
+\end{frame}
+
+\begin{frame}{Conteneurs}{\textit{Container Engine} et \textit{Container Runtime}}
+    \begin{itemize}
+        \item Un environnement d'exécution et un ensemble de services pour
+        manipuler des conteneurs docker sur une machine
+        \item Exemple : Docker engine
+        \item Logiciel client-serveur
+        \begin{itemize}
+            \item Le serveur -- Un daemon (processus persistant) qui gère les
+            conteneurs sur une machine
+            \item Le client -- Une interface en ligne de commande
+        \end{itemize} 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Conteneurs}{Support du système d'exploitation. Focus sur Linux}
+    Plusieurs fonctionnalités fournies par des sous-systèmes et outils du noyau
+    Linux pour gérer les conteneurs. Par exemple
+        \begin{itemize}
+            \item Namespaces\footnote{\url{https://www.man7.org/linux/man-pages/man7/namespaces.7.html}} :
+            pour configurer les ressources système visibles par un processus donné
+            (interfaces/ports réseau, utilisateurs, PID, etc)
+            \item Groupes de contrôle
+            (cgroups\footnote{\url{https://www.man7.org/linux/man-pages/man7/cgroups.7.html}}) :
+            pour appliquer les limites d'allocation des ressources
+            \item Capacités : pour contrôler les opérations qu'un
+            processus/utilisateur donné est autorisé à effectuer sur différents
+            types de ressources
+            \item Seccomp\footnote{\url{https://www.man7.org/linux/man-pages/man2/seccomp.2.html}} :
+            pour filtrer les appels système légitimes qu'un processus peut effectuer
+        \end{itemize}
+        
+    \end{frame}
+
+\begin{frame}{Conteneurs}{Concept d'Image}
+
+    Les technologies de conteneurs offrent une solution de \textit{packaging}
+pour une application et ses dépendances. 
+
+\textbf{Les images de conteneurs : } Package de l'application et de ces
+dépendances
+
+\begin{itemize}
+    \item Peut être exécutée sur différents environnements
+    \item Décrites par un fichier texte (exemple : \texttt{Dockerfile})
+\end{itemize}
+
+
+\textbf{Un Conteneur : }Une instance d'une image de conteneur 
+\begin{itemize}
+\item S'exécute dans un environnement isolé
+\end{itemize}
+
+
+\textbf{Analogie POO : }
+\begin{itemize}
+    \item Une image = une classe
+    \item  Un conteneur = une instance
+\end{itemize}    
     
 \end{frame}
+
+\begin{frame}{Images de Conteneur vs Images de VM}
+
+    \textbf{Les images de VM : }
+    \begin{itemize}
+        \item Sauvegarde de l'état de la VM (Mémoire, disques virtuels, etc) à
+        un moment donné (\textit{Snapshot}).
+        \item La VM redémarre dans l'état qui a été sauvegardé
+    \end{itemize}
+
+    \textbf{Les images de Conteneur : }
+    \begin{itemize}
+        \item Une copie d'une partie d'un système de fichier
+        \item Pas de notion d'état
+    \end{itemize}
+    
+\end{frame}
+
+
+
+\begin{frame}{Conteneurs}{Applications : Intégration Continue (CI)}
+
+    \begin{itemize}
+        \item \textbf{Portabilité de tests :} Environnement de test créé à partir d'une image Docker
+        \begin{itemize}
+            \item Les tests peuvent être exécutés sur n'importe quelle
+            plateforme (plateforme de CI)
+        \end{itemize}
+        \item \textbf{Isolation de tests : }Un nouveau conteneur créé pour chaque étape de tests
+        \begin{itemize}
+            \item Pas de pollution entre les étapes d'un test
+            \item Pas de pollution entre plusieurs exécutions des tests
+        \end{itemize}
+        \item \textbf{Démarrage rapide : }Les tests peuvent être exécutés très souvent
+    \end{itemize}   
+\end{frame}
+
+\begin{frame}{Conteneurs}{Applications : Déploiement Continu (CD) et \textit{Infrastructure as Code}}
+
+    \begin{itemize}
+        \item Construire notre application à partir d'images (décrites à partir
+        de \texttt{Dockerfiles})
+        \item Stocker les images dans un registre
+        \begin{itemize}
+            \item Stockage pérenne
+            \item Accessible pour tout le monde
+        \end{itemize}
+        \item Exécuter en production
+        \begin{itemize}
+            \item Les images contiennent toutes les dépendances pour vos
+            applications
+        \end{itemize}
+        \item Installation d'environnement automatisé
+        \begin{itemize}
+            \item Fin du "pourtant ça marche sur ma machine"
+            \item Écrire les instructions d'installation dans un fichier \texttt{INSTALL.txt}
+            \item Créer un script \texttt{install.sh} qui fonctionne
+            \item Le transformer en un \texttt{Dockerfile}
+            \item Créer une image Docker à partir de ce \texttt{Dockerfile}
+        \end{itemize}
+    \end{itemize}   
+
+\end{frame}
+
+
+\begin{frame}{Machines Virtuelles et Conteneurs}{Points en commun}
+    \begin{itemize}
+        \item \textbf{Faciliter le déploiement :} Encapsuler le code (applications,
+        librairies) et les configurations pour augmenter la portabilité entre
+        plusieurs machines physiques et environnement de déploiement
+        \begin{itemize}
+            \item Exemples : CI/CD, \textit{infrastructure as code}
+        \end{itemize}
+        \item \textbf{Partager des ressources en sécurité : }garantir l'isolation du code
+        invité (\textit{guest code}) entre plusieurs invités. Éviter des
+        interactions indésirables entre :
+        \begin{itemize}
+            \item L’hôte et les autres invités (code et données)
+            \item Les ressources physiques
+        \end{itemize}
+        \item \textbf{Isoler la performance :} contrôler précisément combien de
+        ressources chaque invité peut utiliser
+        \begin{itemize}
+            \item Éviter/Réduire les interférences entre les invités
+            \item Différencier la qualité de service (\textit{Quality of
+            service, QoS}) entre les invités
+        \end{itemize}   
+    \end{itemize}    
+\end{frame}
+
+\begin{frame}{Machines Virtuelles et Conteneurs}{Différences}
+
+    \begin{itemize}
+        \item \textbf{Empreinte mémoire/stockage :} Conteneurs sont plus légers
+        \item \textbf{Temps de démarrage et d'arrêt :} Conteneurs sont plus rapides
+        \item \textbf{Sécurité :} Machines virtuelles sont potentiellement plus
+        sécurisées, mais les deux (VMs et conteneurs) ont également une grande
+        surface d'attaque
+        \item \textbf{Migration entre machines hôte :} VMs sont plus robustes
+        \item \textbf{Support \textit{stateful} et \textit{stateless} : } VMs sont plus robustes
+    \end{itemize}
+
+
+\end{frame}
+
+\begin{frame}{Machines Virtuelles et Conteneurs}{En pratique}
+
+    L'usage de ces deux technologies n'est pas forcément antagoniste et
+    mutuellement exclusive. 
+    \begin{itemize}
+        \item Fournisseurs de Cloud public typiquement déploient de Conteneurs
+        dans des machines virtuelles
+        \item Les systèmes d'orchestration de conteneurs peuvent remplacer de
+        conteneurs par des machines virtuelles de façon transparente
+        \begin{itemize}
+            \item Par exemple, l'interface CRI (\textit{container runtime
+            interface}) de Kubernetes est compatible avec machines virtuelles
+        \end{itemize}
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Support supplémentaire}
+    \begin{itemize}
+        \item Cours de Thomas ROPARS et Renaud LACHAIZE
+        \begin{itemize}
+            \item \url{https://tropars.github.io/downloads/lectures/Docker/formation\_docker.pdf}
+            \item \url{https://roparst.gricad-pages.univ-grenoble-alpes.fr/cloud-tutorials/lectures/Cloud--Building\_blocks.pdf}
+        \end{itemize}
+
+        \item \textit{Cloud Fundamentals by IBM} (en Anglais)
+        \begin{itemize}
+            \item \url{https://www.youtube.com/playlist?list=PLOspHqNVtKAC-\_ZAGresP-i0okHe5FjcJ}
+        \end{itemize}
+    \end{itemize} 
+
+\end{frame}
+
+
+\begin{comment}
+    Virtual machines and Containers (2/3)
+However, virtual machines and containers also have significantly different
+characteristics regarding some aspects:
+● Dependencies for portability: Hardware interface vs. OS interface (ABI)
+● Memory and disk footprint: Containers are more lightweight.
+● Startup and shutdown latency: Containers are faster.
+● I/O performance: Depending on the chosen setups, VMs and/or containers may have non-negligible
+overheads for network- or disk-sensitive workloads. (There is no clear performance hierarchy between
+the two).
+● Syscall performance: Same remark as above for syscall-intensive workloads.
+● Security: VMs are arguably more secure. However, VM and container technologies both have a large
+attack surface.
+● Live migration (across physical hosts): VMs have more mature/robust support.
+● Support for stateful (vs. stateless) workloads: VMs have more mature/robust support.
+
+These two technologies are not necessarily antagonist and mutually
+exclusive.
+● In public clouds, containers are often/typically deployed within virtual machines.
+● Modern “container orchestration” systems are agnostic regarding the actual container
+implementation and can use VMs as a replacement.
+§ For example, in the Kubernetes orchestrator, the CRI (container runtime interface) specification is
+also compatible with virtual machines.
+● Many recent facilities integrated in host operating systems can be leveraged by both
+technologies.
+§ For example, on Linux, the seccomp and eBPF subsystem available for secure and efficient
+sandboxing & monitoring of guest code. 
+
+
+Fin du "pourtant ça marche sur ma machine"
+1. Ecrire les instructions d'installation dans un fichier INSTALL.txt
+2. Créer un script install.sh qui fonctionne
+3. Le transformer en un Dockerfile
+4. Créer une image Docker à partir de ce Dockerfile
+
+
+Utilisation pour de l'intégration continue (CI)
+1. Environnement de test créé à partir d'une image Docker
+Les tests peuvent être exécutés sur n'importe quelle plateforme (plateforme de CI)
+2. Un nouveau conteneur créé pour chaque étape de tests
+Pas de polution entre les étapes d'un test
+Pas de polution entre plusieurs exécutions des tests
+3. Les tests peuvent être exécutés très souvent
+
+Utilisation pour la distribution d'artefacts
+1. Contruire notre application à partir de Dockerfiles
+2. Stocker les images dans un registre
+Stockage pérenne
+Accessible pour tout le monde
+3. Exécuter en production
+Les images contiennent toutes les dépendances pour vos applications
+4. Versionage
+Possibilité de tagger les images
+
+%https://tropars.github.io/downloads/lectures/Docker/formation_docker.pdf
+
+%https://roparst.gricad-pages.univ-grenoble-alpes.fr/cloud-tutorials/lectures/Cloud--Building_blocks.pdf
+\end{comment}
 
 \end{document}
